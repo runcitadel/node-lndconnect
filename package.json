@@ -12,8 +12,7 @@
     "build": "yarn tsc",
     "clean": "rimraf -r ./lib",
     "preversion": "yarn test",
-    "prepack": "yarn build",
-    "postpack": "rm *.js"
+    "prepack": "yarn build"
   },
   "pre-push": [
     "lint",

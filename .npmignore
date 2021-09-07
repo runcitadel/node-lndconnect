@@ -1,3 +1,5 @@
 src
 .*
 lib/tsconfig.tsbuildinfo
+test
+tsconfig.json
