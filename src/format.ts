@@ -1,12 +1,13 @@
-import url from 'url'
+import url from 'url';
+import type { lndconnectUrlData } from './types';
 
 /**
  * Generate an lndconnect url.
  * @param  {Object} data Data to format (object containing host, cert, and macaroon keys).
  * @return {String} lndconnect url.
  */
-const format = data => {
-  const { cert, macaroon, host } = data
+export default function format(data: lndconnectUrlData): string {
+  const { cert, macaroon, host } = data;
   return url.format({
     protocol: 'lndconnect',
     slashes: true,
@@ -15,7 +16,5 @@ const format = data => {
       cert,
       macaroon,
     },
-  })
+  });
 }
-
-export default format

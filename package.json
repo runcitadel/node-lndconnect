@@ -1,32 +1,27 @@
 {
-  "name": "lndconnect",
-  "version": "0.2.10",
+  "name": "@runcitadel/lndconnect",
+  "version": "0.0.1",
   "description": "Generate and parse lndconnect uris",
-  "main": "./index.js",
+  "main": "./lib/index.js",
   "engines": {
-    "node": ">=6.0.0",
-    "npm": ">=4.0.0"
+    "node": ">=12.0.0"
   },
   "scripts": {
-    "test": "babel-tape-runner test/*.js | tap-spec",
-    "lint": "prettier-eslint --write \"./**/*.{js,json,md}\"",
-    "build": "npm run clean && cross-env NODE_ENV=production babel src --out-dir dist",
-    "clean": "rimraf -r ./dist",
-    "preversion": "npm test",
-    "prepack": "npm run build && cp dist/*.js .",
+    "test": "tape test/*.js | tap-spec",
+    "lint": "prettier-eslint --write \"./**/*.{ts,json,md}\"",
+    "build": "yarn tsc",
+    "clean": "rimraf -r ./lib",
+    "preversion": "yarn test",
+    "prepack": "yarn build",
     "postpack": "rm *.js"
   },
-  "files": [
-    ".babelrc",
-    "*.js"
-  ],
   "pre-push": [
     "lint",
     "test"
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/LN-Zap/node-lndconnect.git"
+    "url": "git+https://github.com/runcitadel/node-lndconnect.git"
   },
   "dependencies": {
     "base64url": "^3.0.1",
@@ -39,34 +34,29 @@
     "lightning-network",
     "lnd"
   ],
-  "author": "Tom Kirkpatrick <tkp@kirkdesigns.co.uk> (http://www.kirkdesigns.co.uk/)",
+  "author": "Aaron Dewes <aaron.dewes@protonmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/LN-Zap/node-lndconnect/issues"
+    "url": "https://github.com/runcitadel/node-lndconnect/issues"
   },
-  "homepage": "https://github.com/LN-Zap/node-lndconnect",
+  "homepage": "https://github.com/runcitadel/node-lndconnect",
   "devDependencies": {
-    "babel-cli": "6.26.0",
-    "babel-plugin-add-module-exports": "1.0.2",
-    "babel-plugin-source-map-support": "2.1.1",
-    "babel-preset-env": "1.7.0",
-    "babel-register": "6.26.0",
-    "babel-tape-runner": "3.0.0",
-    "cross-env": "6.0.3",
-    "eslint": "6.6.0",
-    "eslint-config-prettier": "6.7.0",
-    "prettier": "1.18.2",
-    "prettier-eslint": "9.0.1",
-    "prettier-eslint-cli": "5.0.0",
-    "rimraf": "3.0.0",
-    "source-map-support": "0.5.16",
+    "@types/decode-uri-component": "^0.2.0",
+    "@types/node": "^16.7.13",
+    "@types/strict-uri-encode": "^2.0.0",
+    "@typescript-eslint/eslint-plugin": "^4.31.0",
+    "@typescript-eslint/parser": "^4.31.0",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "8.3.0",
+    "prettier": "2.3.2",
+    "prettier-eslint": "13.0.0",
+    "prettier-eslint-cli": "5.0.1",
+    "rimraf": "3.0.2",
+    "source-map-support": "0.5.19",
     "tap-spec": "5.0.0",
-    "tape": "4.11.0",
-    "tape-promise": "4.0.0"
+    "tape": "5.3.1",
+    "typescript": "^4.4.2"
   },
-  "buildDependencies": [
-    "babel-cli",
-    "babel-plugin-add-module-exports",
-    "babel-preset-env"
-  ]
+  "type": "module",
+  "packageManager": "yarn@3.0.2"
 }
