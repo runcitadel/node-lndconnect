@@ -2,7 +2,8 @@
   "name": "@runcitadel/lndconnect",
   "version": "0.0.2",
   "description": "Generate and parse lndconnect uris",
-  "main": "./lib/index.js",
+  "main": "./dist/index.js",
+  "browser": "./browser/index.js",
   "engines": {
     "node": ">=12.0.0"
   },
