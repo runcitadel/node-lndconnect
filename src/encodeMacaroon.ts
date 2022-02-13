@@ -1,4 +1,5 @@
 import base64url from 'base64url';
+import {Buffer} from "buffer";
 import strictUriEncode from 'strict-uri-encode';
 
 /**

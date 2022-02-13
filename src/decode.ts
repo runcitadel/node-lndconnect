@@ -1,4 +1,3 @@
-import { URL } from 'url';
 import decodeCert from './decodeCert.js';
 import decodeMacaroon from './decodeMacaroon.js';
 import { lndconnectUrlData } from './types';

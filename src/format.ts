@@ -1,4 +1,4 @@
-import url from 'url';
+import { format as formatUrl } from 'url';
 import type { lndconnectUrlData } from './types';
 
 /**
@@ -8,7 +8,7 @@ import type { lndconnectUrlData } from './types';
  */
 export default function format(data: lndconnectUrlData): string {
   const { cert, macaroon, host } = data;
-  return url.format({
+  return formatUrl({
     protocol: 'lndconnect',
     slashes: true,
     host,

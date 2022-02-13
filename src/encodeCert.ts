@@ -1,5 +1,6 @@
 import base64url from 'base64url';
 import strictUriEncode from 'strict-uri-encode';
+import {Buffer} from "buffer";
 
 /**
  * Encode a tls certificate as a base64 encoded url string.

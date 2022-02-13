@@ -1,7 +1,5 @@
 import base64url from 'base64url';
 import decodeUriComponent from 'decode-uri-component';
-import untildify from 'untildify';
-import { isAbsolute } from 'path';
 
 /**
  * decode a tls certificate from a base64 encoded url string.
@@ -15,7 +13,7 @@ export default function decodeCert(certString: string): string {
 
   const unescaped = decodeUriComponent(certString);
 
-  if (isAbsolute(untildify(unescaped))) {
+  if (unescaped.startsWith("/") || unescaped.startsWith("~")) {
     return unescaped;
   }
 

@@ -6,7 +6,7 @@ import fs from 'fs/promises';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 
-import { encodeCert, decodeCert, decodeMacaroon, encodeMacaroon, parse, encode, decode, format } from '../lib/index.js';
+import { encodeCert, decodeCert, decodeMacaroon, encodeMacaroon, parse, encode, decode, format } from '../dist/index.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -120,14 +120,6 @@ test('encode', (t) => {
 test('decode (valid)', (t) => {
   t.plan(3);
   const connectionDetails = decode(CONNECTION_STRING);
-  t.equal(connectionDetails.host, `${HOSTNAME}:${PORT}`, 'extracted host');
-  t.equal(connectionDetails.cert, CERT, 'extracted cert');
-  t.equal(connectionDetails.macaroon, MACAROON, 'extracted macaroon');
-});
-
-test('decode legacy (valid)', (t) => {
-  t.plan(3);
-  const connectionDetails = decode(CONNECTION_STRING_LEGACY);
   t.equal(connectionDetails.host, `${HOSTNAME}:${PORT}`, 'extracted host');
   t.equal(connectionDetails.cert, CERT, 'extracted cert');
   t.equal(connectionDetails.macaroon, MACAROON, 'extracted macaroon');

@@ -10,7 +10,8 @@
 This package provides utilities for generating and parsing lndconnect uris.
 
 This is a fork of the original [node-lndconnect](https://github.com/LN-Zap/node-lndconnect) which has been rewritten in TypeScript.
-Ir is now also using ES Modules, and less deprecated APIs.
+It is now also using ES Modules, and less deprecated APIs.
+In addition, this package works in the browser. However, the legacy URL format (`lndconnect:///?host=1.2.3.4&cert=cert&macaroon=macaroon`) is no longer supported.
 
 For more information take a look at the [specification of the uri format](https://github.com/LN-Zap/lndconnect/blob/master/lnd_connect_uri.md).
 

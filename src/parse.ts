@@ -1,4 +1,3 @@
-import { URL } from 'url';
 import type { lndconnectUrlData } from './types';
 /**
  * Decode an lndconnect url.
