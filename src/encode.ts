@@ -9,9 +9,8 @@ import type { lndconnectUrlData } from './types';
  * @return {String} lndconnect url.
  */
 export default function encode(data: lndconnectUrlData): string {
-  const cert = encodeCert(data.cert);
+  const cert = data.cert ? encodeCert(data.cert) : false;
   const macaroon = encodeMacaroon(data.macaroon);
-  const host = data.host;
 
-  return format({ host, cert, macaroon });
+  return format({ ...data, cert, macaroon } as lndconnectUrlData);
 }

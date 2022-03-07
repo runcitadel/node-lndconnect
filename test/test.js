@@ -6,7 +6,7 @@ import fs from 'fs/promises';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 
-import { encodeCert, decodeCert, decodeMacaroon, encodeMacaroon, parse, encode, decode, format } from '../dist/index.js';
+import { encodeCert, decodeCert, decodeMacaroon, encodeMacaroon, parse, encode, decode, format, UrlVersion } from '../dist/index.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -42,8 +42,8 @@ const ENCODED_MACAROON =
   'AgEDbG5kArsBAwoQ_Dvl5gsNFAUTkjbCq4w1_hIBMBoWCgdhZGRyZXNzEgRyZWFkEgV3cml0ZRoTCgRpbmZvEgRyZWFkEgV3cml0ZRoXCghpbnZvaWNlcxIEcmVhZBIFd3JpdGUaFgoHbWVzc2FnZRIEcmVhZBIFd3JpdGUaFwoIb2ZmY2hhaW4SBHJlYWQSBXdyaXRlGhYKB29uY2hhaW4SBHJlYWQSBXdyaXRlGhQKBXBlZXJzEgRyZWFkEgV3cml0ZQAABiBsG0xskPH_9m_383wpzL5oaB-a_GXkMF9_gfs9HFocfw';
 const CONNECTION_STRING =
   'lndconnect://1.2.3.4:10009?cert=MIICuDCCAl6gAwIBAgIQeubXIhKzlGo_scDmWj9VtzAKBggqhkjOPQQDAjA_MR8wHQYDVQQKExZsbmQgYXV0b2dlbmVyYXRlZCBjZXJ0MRwwGgYDVQQDExN0aGVkZWF0aG1hY2hpbmUubGFuMB4XDTE5MDEwMjExMzUxOVoXDTIwMDIyNzExMzUxOVowPzEfMB0GA1UEChMWbG5kIGF1dG9nZW5lcmF0ZWQgY2VydDEcMBoGA1UEAxMTdGhlZGVhdGhtYWNoaW5lLmxhbjBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABFosqs1rkSPwi6gOtuKSd7jMx8XSgadnbjWTbAH14-wFKYP7710JfosoikHW2dwZlUEfbeFNs33T2ifMTqD3hVujggE6MIIBNjAOBgNVHQ8BAf8EBAMCAqQwDwYDVR0TAQH_BAUwAwEB_zCCAREGA1UdEQSCAQgwggEEghN0aGVkZWF0aG1hY2hpbmUubGFugglsb2NhbGhvc3SCBHVuaXiCCnVuaXhwYWNrZXSHBH8AAAGHEAAAAAAAAAAAAAAAAAAAAAGHEP6AAAAAAAAAAAAAAAAAAAGHEP6AAAAAAAAAEOe3k9fX-f6HBMCoVs2HEP6AAAAAAAAAvPC7__6rGHCHEP6AAAAAAAAA8JND8_hwxvqHEP6AAAAAAAAA6rX1aP4vsbaHEP6AAAAAAAAAlbtYbhCVtbeHEP6AAAAAAAAALZmwBSSILp-HEP6AAAAAAAAAKNvxGH98fU-HEP6AAAAAAAAAvOC7LgFuUZGHEP6AAAAAAAAArt5I__4AESIwCgYIKoZIzj0EAwIDSAAwRQIhALwsEmlLQfARQOca0gbF8XnTofXHqnjkBhyO0vTgTH5lAiB-GU2TVpSAsPAoKv6XopMG_oMolgo5T1YByHu202p9Uw&macaroon=AgEDbG5kArsBAwoQ_Dvl5gsNFAUTkjbCq4w1_hIBMBoWCgdhZGRyZXNzEgRyZWFkEgV3cml0ZRoTCgRpbmZvEgRyZWFkEgV3cml0ZRoXCghpbnZvaWNlcxIEcmVhZBIFd3JpdGUaFgoHbWVzc2FnZRIEcmVhZBIFd3JpdGUaFwoIb2ZmY2hhaW4SBHJlYWQSBXdyaXRlGhYKB29uY2hhaW4SBHJlYWQSBXdyaXRlGhQKBXBlZXJzEgRyZWFkEgV3cml0ZQAABiBsG0xskPH_9m_383wpzL5oaB-a_GXkMF9_gfs9HFocfw';
-const CONNECTION_STRING_LEGACY =
-  'lndconnect://?host=1.2.3.4:10009&cert=MIICuDCCAl6gAwIBAgIQeubXIhKzlGo_scDmWj9VtzAKBggqhkjOPQQDAjA_MR8wHQYDVQQKExZsbmQgYXV0b2dlbmVyYXRlZCBjZXJ0MRwwGgYDVQQDExN0aGVkZWF0aG1hY2hpbmUubGFuMB4XDTE5MDEwMjExMzUxOVoXDTIwMDIyNzExMzUxOVowPzEfMB0GA1UEChMWbG5kIGF1dG9nZW5lcmF0ZWQgY2VydDEcMBoGA1UEAxMTdGhlZGVhdGhtYWNoaW5lLmxhbjBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABFosqs1rkSPwi6gOtuKSd7jMx8XSgadnbjWTbAH14-wFKYP7710JfosoikHW2dwZlUEfbeFNs33T2ifMTqD3hVujggE6MIIBNjAOBgNVHQ8BAf8EBAMCAqQwDwYDVR0TAQH_BAUwAwEB_zCCAREGA1UdEQSCAQgwggEEghN0aGVkZWF0aG1hY2hpbmUubGFugglsb2NhbGhvc3SCBHVuaXiCCnVuaXhwYWNrZXSHBH8AAAGHEAAAAAAAAAAAAAAAAAAAAAGHEP6AAAAAAAAAAAAAAAAAAAGHEP6AAAAAAAAAEOe3k9fX-f6HBMCoVs2HEP6AAAAAAAAAvPC7__6rGHCHEP6AAAAAAAAA8JND8_hwxvqHEP6AAAAAAAAA6rX1aP4vsbaHEP6AAAAAAAAAlbtYbhCVtbeHEP6AAAAAAAAALZmwBSSILp-HEP6AAAAAAAAAKNvxGH98fU-HEP6AAAAAAAAAvOC7LgFuUZGHEP6AAAAAAAAArt5I__4AESIwCgYIKoZIzj0EAwIDSAAwRQIhALwsEmlLQfARQOca0gbF8XnTofXHqnjkBhyO0vTgTH5lAiB-GU2TVpSAsPAoKv6XopMG_oMolgo5T1YByHu202p9Uw&macaroon=AgEDbG5kArsBAwoQ_Dvl5gsNFAUTkjbCq4w1_hIBMBoWCgdhZGRyZXNzEgRyZWFkEgV3cml0ZRoTCgRpbmZvEgRyZWFkEgV3cml0ZRoXCghpbnZvaWNlcxIEcmVhZBIFd3JpdGUaFgoHbWVzc2FnZRIEcmVhZBIFd3JpdGUaFwoIb2ZmY2hhaW4SBHJlYWQSBXdyaXRlGhYKB29uY2hhaW4SBHJlYWQSBXdyaXRlGhQKBXBlZXJzEgRyZWFkEgV3cml0ZQAABiBsG0xskPH_9m_383wpzL5oaB-a_GXkMF9_gfs9HFocfw';
+const CONNECTION_STRING_LNCONNECT =
+  'lnconnect://1.2.3.4:10009?c=false&m=AgEDbG5kArsBAwoQ_Dvl5gsNFAUTkjbCq4w1_hIBMBoWCgdhZGRyZXNzEgRyZWFkEgV3cml0ZRoTCgRpbmZvEgRyZWFkEgV3cml0ZRoXCghpbnZvaWNlcxIEcmVhZBIFd3JpdGUaFgoHbWVzc2FnZRIEcmVhZBIFd3JpdGUaFwoIb2ZmY2hhaW4SBHJlYWQSBXdyaXRlGhYKB29uY2hhaW4SBHJlYWQSBXdyaXRlGhQKBXBlZXJzEgRyZWFkEgV3cml0ZQAABiBsG0xskPH_9m_383wpzL5oaB-a_GXkMF9_gfs9HFocfw&v=0&s=c-lightning';
 
 test('encodeCert (data)', async (t) => {
   t.plan(1);
@@ -109,6 +109,12 @@ test('format', (t) => {
   t.plan(1);
   const connectionString = format({ host: `${HOSTNAME}:${PORT}`, macaroon: ENCODED_MACAROON, cert: ENCODED_CERT });
   t.equal(connectionString, CONNECTION_STRING, 'generated expected connection string');
+});
+
+test('format (lnconnect, c-lightning, no cert)', (t) => {
+  t.plan(1);
+  const connectionString = format({ host: `${HOSTNAME}:${PORT}`, macaroon: ENCODED_MACAROON, cert: false, server: "c-lightning", version: UrlVersion.LNCONNECT_UNIVERSAL_V0 });
+  t.equal(connectionString, CONNECTION_STRING_LNCONNECT, 'generated expected connection string');
 });
 
 test('encode', (t) => {

@@ -6,3 +6,5 @@ export { default as encode } from './encode.js';
 export { default as decode } from './decode.js';
 export { default as parse } from './parse.js';
 export { default as format } from './format.js';
+export { UrlVersion } from "./types";
+export type { lndconnectUrlData } from "./types";
