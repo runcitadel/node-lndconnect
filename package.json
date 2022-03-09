@@ -1,6 +1,6 @@
 {
   "name": "@runcitadel/lndconnect",
-  "version": "0.0.4",
+  "version": "0.0.55",
   "description": "Generate and parse lndconnect uris",
   "main": "./dist/index.js",
   "browser": "./browser/index.js",
